@@ -53,13 +53,13 @@ First, let's analyze the advantages and disadvantages of this way of storing dat
 
 * Size Constraints: Blockchain storage is expensive and limited.
 
-✅ In DecentraLabs, the following attributes are stored on-chain to ensure transparency and integrity of critical service-related data:
+✅ In DecentraLabs, the following attributes are stored on-chain (see https://github.com/DecentraLabsCom/Smart-Contract-Specifications) to ensure transparency and integrity of critical service-related data:
 
-* id
-* price
-* auth
-* accessURI
-* accessKey
+* $id$
+* $price$
+* $auth$
+* $accessURI$
+* $accessKey$
 
 This design guarantees that lab providers cannot silently change core access parameters (such as access endpoints or authentication mechanisms) after a reservation has been made, without it being publicly visible on the blockchain. Any modification would require a new transaction, creating an immutable audit trail. This promotes accountability and protects users by making unauthorized or unexpected changes detectable by anyone.
 
@@ -82,18 +82,18 @@ Again, we first review the advantages and disadvantages of this approach.
 
 ✅ Thus, DecentraLabs stores the following off-chain, referenced via base.uri:
 
-* name
-* category
-* keywords
-* description
-* provider
-* timeSlot
-* startDate
-* finishDate
-* docs
-* images
+* $name$
+* $category$
+* $keywords$
+* $description$
+* $provider$
+* $timeSlot$
+* $startDate$
+* $finishDate$
+* $docs$
+* $images$
 
-📝 Note: Attributes like timeSlot, startDate, and finishDate do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract. This makes them ideal candidates for off-chain storage, along with the others.
+📝 Note: Attributes like $timeSlot$, $startDate$, and $finishDate$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit https://github.com/DecentraLabsCom/Smart-Contract-Specifications for more information). This makes them ideal candidates for off-chain storage, along with the other attributes.
 
 🧾 Sample Metadata JSON
 
