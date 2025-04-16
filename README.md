@@ -53,7 +53,7 @@ First, let's analyze the advantages and disadvantages of this way of storing dat
 
 * Size Constraints: Blockchain storage is expensive and limited.
 
-✅ In DecentraLabs, the following attributes are stored on-chain in the LabFacet contract (see the [Smart contracts specification](https://github.com/DecentraLabsCom/...](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) to ensure transparency and integrity of critical service-related data:
+✅ In DecentraLabs, the following attributes are stored on-chain in the LabFacet contract (see the [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) to ensure transparency and integrity of critical service-related data:
 
 * $id$
 * $price$
