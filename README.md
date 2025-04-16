@@ -53,7 +53,7 @@ First, let's analyze the advantages and disadvantages of this way of storing dat
 
 * Size Constraints: Blockchain storage is expensive and limited.
 
-✅ In DecentraLabs, the following attributes are stored on-chain (see https://github.com/DecentraLabsCom/Smart-Contract-Specifications) to ensure transparency and integrity of critical service-related data:
+✅ In DecentraLabs, the following attributes are stored on-chain in the LabFacet contract (see the [Smart contracts specification](https://github.com/DecentraLabsCom/...](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) to ensure transparency and integrity of critical service-related data:
 
 * $id$
 * $price$
@@ -93,7 +93,7 @@ Again, we first review the advantages and disadvantages of this approach.
 * $docs$
 * $images$
 
-📝 Note: Attributes like $timeSlot$, $startDate$, and $finishDate$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit https://github.com/DecentraLabsCom/Smart-Contract-Specifications for more information). This makes them ideal candidates for off-chain storage, along with the other attributes.
+📝 Note: Attributes like $timeSlot$, $startDate$, and $finishDate$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) for more information). This makes them ideal candidates for off-chain storage, along with the other attributes.
 
 🧾 Sample Metadata JSON
 
