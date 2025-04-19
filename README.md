@@ -21,9 +21,9 @@ Each lab is described using a structured set of fields, enabling effective manag
   keywords: labKeywords,            // A list of search-friendly tags
   description: labDescription,      // Short but informative description of the lab
   provider: labProvider,            // Name of the institution or company that provides this lab
-  timeSlot: labTimeSlot,            // A list of permitted access durations in minutes
-  startDate: labStartDate,          // The date from which the lab is open for reservations
-  finishDate: labFinishDate,        // The date from which the lab is closed for reservations
+  timeSlots: labTimeSlot,           // A list of permitted access durations in minutes
+  opens: labStartDate,              // The date from which the lab is open for reservations
+  closes: labFinishDate,            // The date from which the lab is closed for reservations
   docs: labDocs,                    // A list of URIs to documentation associated to the lab
   images: labImages                 // A list of URIs to images of the laboratory
 }
@@ -107,9 +107,9 @@ Again, we first review the advantages and disadvantages of this approach.
   "keywords": ["Ohm’s Law", "Power Dissipation", "Kirchhoff’s Laws", "Series/Parallel Resistors"],
   "description": "Design circuits with an easy-to-use schematic editor. Become familiar with some of the common electrical tools and components used for circuits and use them to experimentally test and confirm the validity of theoretical concepts.",
   "provider": "UNED",
-  "timeSlot": [30, 60],
-  "startDate": "2025-06-01",
-  "finishDate": "2025-12-31",
+  "timeSlots": [30, 60],
+  "opens": "2025-06-01",
+  "closes": "2025-12-31",
   "docs": [
     "https://sarlab.dia.uned.es/labs/docs/lab1-1.pdf",
     "https://sarlab.dia.uned.es/labs/docs/lab1-2.pdf"
