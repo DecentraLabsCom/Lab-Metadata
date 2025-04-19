@@ -87,13 +87,13 @@ Again, we first review the advantages and disadvantages of this approach.
 * $keywords$
 * $description$
 * $provider$
-* $timeSlot$
-* $startDate$
-* $finishDate$
+* $timeSlots$
+* $closes$
+* $opens$
 * $docs$
 * $images$
 
-📝 Note: Attributes like $timeSlot$, $startDate$, and $finishDate$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) for more information). This makes them ideal candidates for off-chain storage, along with the other attributes.
+📝 Note: Attributes like $timeSlots$, $opens$, and $closes$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) for more information). This makes them ideal candidates for off-chain storage, along with the other attributes.
 
 🧾 Sample Metadata JSON
 
