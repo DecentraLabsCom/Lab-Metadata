@@ -18,14 +18,14 @@ Each lab is described using a structured set of fields, enabling effective manag
   accessKey: labAccessKey,          // A public (non-sensitive) key or ID used for routing/access
   name: labName,                    // Lab name or title
   category: labCategory,            // Category (e.g. Physics, Electronics, Chemistry...)
-  keywords: labKeywords,            // Search-friendly tags
+  keywords: labKeywords,            // A list of search-friendly tags
   description: labDescription,      // Short but informative description of the lab
   provider: labProvider,            // Name of the institution or company that provides this lab
-  timeSlot: labTimeSlot,            // Duration of access in minutes
+  timeSlot: labTimeSlot,            // A list of permitted access durations in minutes
   startDate: labStartDate,          // The date from which the lab is open for reservations
-  finishDate: labFinishDate,        // The date until the lab is open for reservations
-  docs: labDocs,                    // URIs to documentation associated to the lab
-  images: labImages                 // URIs to images of the laboratory
+  finishDate: labFinishDate,        // The date from which the lab is closed for reservations
+  docs: labDocs,                    // A list of URIs to documentation associated to the lab
+  images: labImages                 // A list of URIs to images of the laboratory
 }
 ```
 
