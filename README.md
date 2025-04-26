@@ -28,7 +28,7 @@ Each lab is described using a structured set of fields, enabling effective manag
 }
 ```
 
-The provider's address is not considered part of the metadata, but it is stored, on-chain, on the [LabFacet contract](https://github.com/DecentraLabsCom/Smart-Contract-Specifications).
+The provider's address is not considered part of the metadata, but can be obtained with the IERC721 standard ownerOf(tokenId/labId) function.
 
 Metadata is divided between two storage models: on-chain and off-chain.
 
