@@ -20,7 +20,6 @@ Each lab is described using a structured set of fields, enabling effective manag
   category: labCategory,            // Category (e.g. Physics, Electronics, Chemistry...)
   keywords: labKeywords,            // A list of search-friendly tags
   description: labDescription,      // Short but informative description of the lab
-  provider: labProvider,            // Name of the institution or company that provides this lab
   timeSlots: labTimeSlot,           // A list of permitted access durations in minutes
   opens: labStartDate,              // The date from which the lab is open for reservations
   closes: labFinishDate,            // The date from which the lab is closed for reservations
@@ -28,6 +27,8 @@ Each lab is described using a structured set of fields, enabling effective manag
   images: labImages                 // A list of URIs to images of the laboratory
 }
 ```
+
+The provider's address is not considered part of the metadata, but it is stored, on-chain, on the [LabFacet contract](https://github.com/DecentraLabsCom/Smart-Contract-Specifications).
 
 Metadata is divided between two storage models: on-chain and off-chain.
 
@@ -86,7 +87,6 @@ Again, we first review the advantages and disadvantages of this approach.
 * $category$
 * $keywords$
 * $description$
-* $provider$
 * $timeSlots$
 * $closes$
 * $opens$
@@ -106,7 +106,6 @@ Again, we first review the advantages and disadvantages of this approach.
   "category": "Electronics",
   "keywords": ["Ohm’s Law", "Power Dissipation", "Kirchhoff’s Laws", "Series/Parallel Resistors"],
   "description": "Design circuits with an easy-to-use schematic editor. Become familiar with some of the common electrical tools and components used for circuits and use them to experimentally test and confirm the validity of theoretical concepts.",
-  "provider": "UNED",
   "timeSlots": [30, 60],
   "opens": "2025-06-01",
   "closes": "2025-12-31",
