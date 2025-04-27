@@ -21,12 +21,17 @@ Laboratories are represented as non-fungible tokens (NFTs) compliant with the [E
     },
     {
       "trait_type": "traitName2",
-      "value": "traitValue2"
+      "value": [
+        "traitValue2-1",
+        "traitValue2-2",
+        ...
+        "traitValue2-M"
+      ]
     },
     ...
     {
       "trait_type": "traitNameN",
-      "value": "traitValue1"
+      "value": "traitValueN"
     }
   ]
 }
