@@ -7,28 +7,61 @@ This repository defines the metadata schema used to describe each lab and provid
 ---
 
 ## 🧬 Metadata Structure
-Each lab is described using a structured set of fields, enabling effective management, visibility, reservation, and access. Below is the current metadata specification:
+Laboratories are represented as non-fungible tokens (NFTs) compliant with the [EIP-721](https://github.com/ethereum/ercs/blob/master/ERCS/erc-721.md) standard and are uniquely identified by their corresponding token ID ($labId$). Each lab is described using a structured set of fields, enabling effective management, visibility, reservation, and access. The following metadata specification adheres to the ERC-721 Metadata JSON Schema:
 
 ```js
 {
-  id: labId,                        // Unique lab identifier
-  price: labPrice,                  // Price (per hour) in $LAB tokens
-  auth: labAuth,                    // URI to the authentication service that issues session tokens for lab access
-  accessURI: labAccessURI,          // URI to the online laboratory service
-  accessKey: labAccessKey,          // A public (non-sensitive) key or ID used for routing/access
-  name: labName,                    // Lab name or title
-  category: labCategory,            // Category (e.g. Physics, Electronics, Chemistry...)
-  keywords: labKeywords,            // A list of search-friendly tags
-  description: labDescription,      // Short but informative description of the lab
-  timeSlots: labTimeSlot,           // A list of permitted access durations in minutes
-  opens: labStartDate,              // The date from which the lab is open for reservations
-  closes: labFinishDate,            // The date from which the lab is closed for reservations
-  docs: labDocs,                    // A list of URIs to documentation associated to the lab
-  images: labImages                 // A list of URIs to images of the laboratory
+  "name": "labName",                        // Lab name or title
+  "description": "labDescription",          // Short but informative description of the lab
+  "image": "primaryImageURI",                // Primary image URI for the lab
+  "external_url": "labAccessURI",            // Link to the online laboratory service
+  "attributes": [
+    {
+      "trait_type": "Price per Hour ($LAB)", // Price for one hour of access, paid in $LAB tokens
+      "value": "labPrice"
+    },
+    {
+      "trait_type": "Authentication Service", // URI to the service issuing access session tokens
+      "value": "labAuth"
+    },
+    {
+      "trait_type": "Access Key",             // Public key or ID used for routing/access
+      "value": "labAccessKey"
+    },
+    {
+      "trait_type": "Category",               // Category of the lab (e.g., Physics, Electronics)
+      "value": "labCategory"
+    },
+    {
+      "trait_type": "Keywords",               // List of search-friendly tags
+      "value": "labKeywords"
+    },
+    {
+      "trait_type": "Available Time Slots (minutes)", // List of permitted access durations
+      "value": "labTimeSlot"
+    },
+    {
+      "trait_type": "Opens",                  // Start date when lab becomes available for reservation
+      "value": "labStartDate"
+    },
+    {
+      "trait_type": "Closes",                  // End date when lab is no longer available for reservation
+      "value": "labFinishDate"
+    },
+    {
+      "trait_type": "Documentation",           // List of URIs to documentation associated with the lab
+      "value": "labDocs"
+    },
+    {
+      "trait_type": "Images",                  // List of additional image URIs for the lab
+      "value": "labImages"
+    }
+  ]
 }
+
 ```
 
-The provider's address is not considered part of the metadata, but can be obtained with the IERC721 standard ownerOf(tokenId/labId) function.
+As $labId$, the provider's address is not considered part of the metadata, but can be obtained with the IERC721 standard ownerOf(tokenId/labId) function. Ownership of laboratories within DecentraLabs is maintained by the ProviderFacet smart contract, where owners are designated as "providers."
 
 Metadata is divided between two storage models: on-chain and off-chain.
 
@@ -56,7 +89,7 @@ First, let's analyze the advantages and disadvantages of this way of storing dat
 
 ✅ In DecentraLabs, the following attributes are stored on-chain in the LabFacet contract (see the [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) to ensure transparency and integrity of critical service-related data:
 
-* $id$
+* $id$ 
 * $price$
 * $auth$
 * $accessURI$
@@ -99,25 +132,61 @@ Again, we first review the advantages and disadvantages of this approach.
 
 ```js
 {
-  "name": "Basic Electronics Lab",
-  "auth": "https://decentralabs.nebsyst.com/auth2",
-  "accessURI": "https://sarlab.dia.uned.es/guacamole",
-  "accessKey": "lab1",
-  "category": "Electronics",
-  "keywords": ["Ohm’s Law", "Power Dissipation", "Kirchhoff’s Laws", "Series/Parallel Resistors"],
-  "description": "Design circuits with an easy-to-use schematic editor. Become familiar with some of the common electrical tools and components used for circuits and use them to experimentally test and confirm the validity of theoretical concepts.",
-  "timeSlots": [30, 60],
-  "opens": "2025-06-01",
-  "closes": "2025-12-31",
-  "docs": [
-    "https://sarlab.dia.uned.es/labs/docs/lab1-1.pdf",
-    "https://sarlab.dia.uned.es/labs/docs/lab1-2.pdf"
-  ],
-  "images": [
-    "https://sarlab.dia.uned.es/labs/imgs/lab1-1.png",
-    "https://sarlab.dia.uned.es/labs/imgs/lab1-2.png"
+  "name": "Basic Electronics Lab",                      // Required by ERC-721
+  "description": "Design circuits with an easy-to-use schematic editor. Become familiar with some of the common electrical tools and components used for circuits and use them to experimentally test and confirm the validity of theoretical concepts.", // Required by ERC-721
+  "image": "https://sarlab.dia.uned.es/labs/imgs/lab1-1.png", // First image as primary representation (ERC-721 expects one main image)
+  "external_url": "https://sarlab.dia.uned.es/guacamole", // Access URI as external link (optional but standard field)
+  "attributes": [
+    {
+      "trait_type": "Authentication Service",
+      "value": "https://decentralabs.nebsyst.com/auth2"
+    },
+    {
+      "trait_type": "Access Key",
+      "value": "lab1"
+    },
+    {
+      "trait_type": "Category",
+      "value": "Electronics"
+    },
+    {
+      "trait_type": "Keywords",
+      "value": [
+        "Ohm’s Law",
+        "Power Dissipation",
+        "Kirchhoff’s Laws",
+        "Series/Parallel Resistors"
+      ]
+    },
+    {
+      "trait_type": "Available Time Slots (minutes)",
+      "value": [30, 60]
+    },
+    {
+      "trait_type": "Opens",
+      "value": "2025-06-01"
+    },
+    {
+      "trait_type": "Closes",
+      "value": "2025-12-31"
+    },
+    {
+      "trait_type": "Documentation",
+      "value": [
+        "https://sarlab.dia.uned.es/labs/docs/lab1-1.pdf",
+        "https://sarlab.dia.uned.es/labs/docs/lab1-2.pdf"
+      ]
+    },
+    {
+      "trait_type": "Additional Images",
+      "value": [
+        "https://sarlab.dia.uned.es/labs/imgs/lab1-1.png",
+        "https://sarlab.dia.uned.es/labs/imgs/lab1-2.png"
+      ]
+    }
   ]
 }
+
 ```
 
 ## 🤝 Contributing
