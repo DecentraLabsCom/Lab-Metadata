@@ -106,7 +106,7 @@ Again, we first review the advantages and disadvantages of this approach.
 📝 Note: Attributes like $timeSlots$, $opens$, and $closes$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) for more information). This makes them ideal candidates for off-chain storage, along with the other attributes.
 
 ## 🏷️ Sample Metadata
-###🔗 Sample On-chain Metadata
+### 🔗 Sample On-chain Metadata
 ```yaml
 id: 1
 price: 1.2
@@ -115,7 +115,7 @@ accessURI: "https://sarlab.dia.uned.es/guacamole"
 accessKey: "lab1"
 ```
 
-###🧾 Sample Off-chain Metadata JSON
+### 🧾 Sample Off-chain Metadata JSON
 
 ```js
 {
