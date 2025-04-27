@@ -61,7 +61,7 @@ Laboratories are represented as non-fungible tokens (NFTs) compliant with the [E
 
 ```
 
-As $labId$, the provider's address is not considered part of the metadata, but can be obtained with the IERC721 standard ownerOf(tokenId/labId) function. Ownership of laboratories within DecentraLabs is maintained by the ProviderFacet smart contract, where owners are designated as "providers."
+The provider's address is not considered part of the metadata (as it happens with $id$), but it can be obtained with the IERC721 standard ownerOf(tokenId/labId) function. If the provider's name is needed, a query to the ProviderFacet smart contract is required.
 
 Metadata is divided between two storage models: on-chain and off-chain.
 
@@ -128,23 +128,23 @@ Again, we first review the advantages and disadvantages of this approach.
 
 📝 Note: Attributes like $timeSlots$, $opens$, and $closes$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) for more information). This makes them ideal candidates for off-chain storage, along with the other attributes.
 
-🧾 Sample Metadata JSON
+🔗 Sample On-chain Metadata
+```yaml
+id: 1
+price: 1.2
+auth: "https://decentralabs.nebsyst.com/auth2"
+accessURI: "https://sarlab.dia.uned.es/guacamole"
+accessKey: "lab1"
+```
+
+🧾 Sample Off-chain Metadata JSON
 
 ```js
 {
-  "name": "Basic Electronics Lab",                      // Required by ERC-721
+  "name": "Basic Electronics Lab", // Required by ERC-721
   "description": "Design circuits with an easy-to-use schematic editor. Become familiar with some of the common electrical tools and components used for circuits and use them to experimentally test and confirm the validity of theoretical concepts.", // Required by ERC-721
   "image": "https://sarlab.dia.uned.es/labs/imgs/lab1-1.png", // First image as primary representation (ERC-721 expects one main image)
-  "external_url": "https://sarlab.dia.uned.es/guacamole", // Access URI as external link (optional but standard field)
-  "attributes": [
-    {
-      "trait_type": "Authentication Service",
-      "value": "https://decentralabs.nebsyst.com/auth2"
-    },
-    {
-      "trait_type": "Access Key",
-      "value": "lab1"
-    },
+  "attributes": [ // Here goes all the attributes that are not standard in ERC-721 and can be customized. They are also optional in DecentraLabs, but extremely recommended
     {
       "trait_type": "Category",
       "value": "Electronics"
@@ -186,7 +186,6 @@ Again, we first review the advantages and disadvantages of this approach.
     }
   ]
 }
-
 ```
 
 ## 🤝 Contributing
