@@ -11,57 +11,29 @@ Laboratories are represented as non-fungible tokens (NFTs) compliant with the [E
 
 ```js
 {
-  "name": "labName",                        // Lab name or title
-  "description": "labDescription",          // Short but informative description of the lab
-  "image": "primaryImageURI",                // Primary image URI for the lab
-  "external_url": "labAccessURI",            // Link to the online laboratory service
-  "attributes": [
+  "name": "tokenName",                // Lab name or title
+  "description": "tokenDescription",  // Short but informative description of the lab
+  "image": "primaryImageURI",         // Primary image URI for the lab
+  "attributes": [                     // Optional and customizable attributes
     {
-      "trait_type": "Price per Hour ($LAB)", // Price for one hour of access, paid in $LAB tokens
-      "value": "labPrice"
+      "trait_type": "traitName1",
+      "value": "traitValue1"
     },
     {
-      "trait_type": "Authentication Service", // URI to the service issuing access session tokens
-      "value": "labAuth"
+      "trait_type": "traitName2",
+      "value": "traitValue2"
     },
+    ...
     {
-      "trait_type": "Access Key",             // Public key or ID used for routing/access
-      "value": "labAccessKey"
-    },
-    {
-      "trait_type": "Category",               // Category of the lab (e.g., Physics, Electronics)
-      "value": "labCategory"
-    },
-    {
-      "trait_type": "Keywords",               // List of search-friendly tags
-      "value": "labKeywords"
-    },
-    {
-      "trait_type": "Available Time Slots (minutes)", // List of permitted access durations
-      "value": "labTimeSlot"
-    },
-    {
-      "trait_type": "Opens",                  // Start date when lab becomes available for reservation
-      "value": "labStartDate"
-    },
-    {
-      "trait_type": "Closes",                  // End date when lab is no longer available for reservation
-      "value": "labFinishDate"
-    },
-    {
-      "trait_type": "Documentation",           // List of URIs to documentation associated with the lab
-      "value": "labDocs"
-    },
-    {
-      "trait_type": "Images",                  // List of additional image URIs for the lab
-      "value": "labImages"
+      "trait_type": "traitNameN",
+      "value": "traitValue1"
     }
   ]
 }
 
 ```
 
-The provider's address is not considered part of the metadata (as it happens with $id$), but it can be obtained with the IERC721 standard ownerOf(tokenId/labId) function. If the provider's name is needed, a query to the ProviderFacet smart contract is required.
+The provider's address is not considered part of the metadata (as it happens with $id$), but it can be obtained with the IERC721 standard ownerOf(tokenId/labId) function. If the lab provider's name is needed, a query to the ProviderFacet smart contract (using the provider's address) is required.
 
 Metadata is divided between two storage models: on-chain and off-chain.
 
