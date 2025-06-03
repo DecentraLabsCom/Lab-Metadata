@@ -158,8 +158,8 @@ accessKey: "lab1"
     {
       "trait_type": "Additional Images",
       "value": [
-        "https://sarlab.dia.uned.es/labs/imgs/lab1-1.png",
-        "https://sarlab.dia.uned.es/labs/imgs/lab1-2.png"
+        "https://sarlab.dia.uned.es/labs/imgs/lab1-2.png",
+        "https://sarlab.dia.uned.es/labs/imgs/lab1-3.png"
       ]
     }
   ]
