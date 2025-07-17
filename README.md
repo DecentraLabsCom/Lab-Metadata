@@ -52,17 +52,17 @@ First, let's analyze the advantages and disadvantages of this way of storing dat
 
 **Advantages:**
 
-* Trust and Immutability: Data stored on-chain is tamper-proof and publicly verifiable.
+* Trust and immutability: Data stored on-chain is tamper-proof and publicly verifiable.
 
-* Payment and Access Logic: Metadata like price, accessURI, and accessKey directly impacts business logic.
+* Payment and access logic: Metadata like price, accessURI, and accessKey directly impacts business logic.
 
-* Autonomous Operations: Enables dApps and smart contracts to function trustlessly.
+* Autonomous operations: Enables dApps and smart contracts to function trustlessly.
 
 **Disadvantages:**
 
-* Gas Fees: Updating on-chain data requires a transaction and incurs a cost.
+* Gas fees: Updating on-chain data requires a transaction and incurs a cost.
 
-* Size Constraints: Blockchain storage is expensive and limited.
+* Size constraints: Blockchain storage is expensive and limited.
 
 ✅ In DecentraLabs, the following attributes are stored on-chain in the LabFacet contract (see the [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) to ensure transparency and integrity of critical service-related data:
 
@@ -81,15 +81,15 @@ Again, we first review the advantages and disadvantages of this approach.
 
 * Flexibility and Cost-Free Updates: Easily updated without gas fees (when no hash is stored onchain)
 
-* Rich Content: Enables large text, documentation, and media.
+* Rich content: Enables large text, documentation, and media.
 
-* Integration-Friendly: Easier to use in traditional web systems.
+* Integration-friendly: Easier to use in traditional web systems.
 
 **Disadvantages:**
 
-* Less Secure: While IPFS provides immutability, its availability depends on pinning and hosting strategies.
+* Less secure: While IPFS provides immutability, its availability depends on pinning and hosting strategies.
 
-* Not Trustlessly Verifiable: Unless a content hash is stored on-chain.
+* Not trustlessly verifiable: Unless a content hash is stored on-chain.
 
 ✅ Thus, DecentraLabs stores the following off-chain, referenced via base.uri:
 
@@ -103,13 +103,13 @@ Again, we first review the advantages and disadvantages of this approach.
 * $docs$
 * $images$
 
-📝 Note: Attributes like $timeSlots$, $opens$, and $closes$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) for more information). This makes them ideal candidates for off-chain storage, along with the other attributes.
+📝 Note: Attributes like $timeSlots$, $opens$, and $closes$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) for more information). This makes them ideal candidates for off-chain storage, along with the other attributes listed above.
 
 ## 🏷️ Sample Metadata
 ### 🔗 Sample On-chain Metadata
 ```yaml
 id: 1
-price: 1.2
+price: 2
 auth: "https://decentralabs.nebsyst.com/auth2"
 accessURI: "https://sarlab.dia.uned.es/guacamole"
 accessKey: "lab1"
