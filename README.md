@@ -79,7 +79,7 @@ Again, we first review the advantages and disadvantages of this approach.
 
 **Advantages:**
 
-* Flexibility and Cost-Free Updates: Easily updated without gas fees (when no hash is stored onchain)
+* Flexibility and cost-free updates: Easily updated without gas fees (when no hash is stored onchain)
 
 * Rich content: Enables large text, documentation, and media.
 
