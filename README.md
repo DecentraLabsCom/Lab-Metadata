@@ -145,11 +145,11 @@ accessKey: "lab1"
     },
     {
       "trait_type": "Opens",
-      "value": "2025-06-01"
+      "value": "06/15/2025"
     },
     {
       "trait_type": "Closes",
-      "value": "2025-12-31"
+      "value": "12/31/2025"
     },
     {
       "trait_type": "Documentation",
