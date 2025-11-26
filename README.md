@@ -94,17 +94,23 @@ Again, we first review the advantages and disadvantages of this approach.
 
 ✅ Thus, DecentraLabs stores the following off-chain, referenced via base.uri:
 
-* $name$
-* $category$
-* $keywords$
-* $description$
-* $timeSlots$
-* $closes$
-* $opens$
-* $docs$
-* $images$
+* $name$ — string, human-readable lab name.
+* $category$ — string, taxonomy key (lowercase slug).
+* $keywords$ — array of strings, tags for search.
+* $description$ — string, human-readable summary.
+* $timeSlots$ — array of numbers (minutes), positive integers.
+* $closes$ — number (Unix seconds), lab close date (inclusive).
+* $opens$ — number (Unix seconds), lab open date (inclusive).
+* $docs$ — array of absolute URLs (PDF).
+* $images$ — array of absolute URLs (first one is main image).
+* $availableDays$ — array of strings, one of MONDAY..SUNDAY.
+* $availableHours$ — object { start: "HH:mm", end: "HH:mm" } in lab timezone.
+* $timezone$ — string, IANA timezone id (e.g., Europe/Madrid).
+* $maxConcurrentUsers$ — integer > 0.
+* $unavailableWindows$ — array of { startUnix: number, endUnix: number, reason: string } with start < end.
+* $termsOfUse$ — object { url, version, effectiveDate (Unix seconds), sha256 } (sha256 optional).
 
-📝 Note: Attributes like $timeSlots$, $opens$, and $closes$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) for more information). This makes them ideal candidates for off-chain storage, along with the other attributes listed above.
+📝 Note: Attributes like $timeSlots$, $opens$, and $closes$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications) for more information). This makes them ideal candidates for off-chain storage, along with the other attributes listed above.
 
 ## 🏷️ Sample Metadata
 
@@ -123,47 +129,30 @@ accessKey: "lab1"
 ```js
 {
   "name": "Basic Electronics Lab", // Required by ERC-721
-  "description": "Design circuits with an easy-to-use schematic editor. Become familiar with some of the common electrical tools and components used for circuits and use them to experimentally test and confirm the validity of theoretical concepts.", // Required by ERC-721
+  "description": "Design circuits with an easy-to-use schematic editor. Become familiar with the common electrical tools and components used for circuits and use them to experimentally test theoretical concepts.", // Required by ERC-721
   "image": "https://sarlab.dia.uned.es/labs/imgs/lab1-1.png", // First image as primary representation (ERC-721 expects one main image)
-  "attributes": [ // Here goes all the attributes that are not standard in ERC-721 and can be customized. They are also optional in DecentraLabs, but extremely recommended
+  "attributes": [ // Custom attributes consumed by the marketplace
+    { "trait_type": "category", "value": "electronics" },
+    { "trait_type": "keywords", "value": ["Ohm's Law", "Power Dissipation", "Kirchhoff's Laws", "Series/Parallel Resistors"] },
+    { "trait_type": "timeSlots", "value": [30, 60] },
+    { "trait_type": "opens", "value": 1749945600 },   // Unix seconds (2025-06-15)
+    { "trait_type": "closes", "value": 1767139200 },  // Unix seconds (2025-12-31)
+
+    { "trait_type": "docs", "value": ["https://sarlab.dia.uned.es/labs/docs/lab1-1.pdf", "https://sarlab.dia.uned.es/labs/docs/lab1-2.pdf"] },
+    { "trait_type": "additionalImages", "value": ["https://sarlab.dia.uned.es/labs/imgs/lab1-2.png", "https://sarlab.dia.uned.es/labs/imgs/lab1-3.png"] },
+    { "trait_type": "availableDays", "value": ["MONDAY", "TUESDAY", "WEDNESDAY"] },
+    { "trait_type": "availableHours", "value": { "start": "09:00", "end": "17:00" } },
+    { "trait_type": "timezone", "value": "Europe/Madrid" },
+    { "trait_type": "maxConcurrentUsers", "value": 3 },
     {
-      "trait_type": "Category",
-      "value": "Electronics"
-    },
-    {
-      "trait_type": "Keywords",
+      "trait_type": "unavailableWindows",
       "value": [
-        "Ohm’s Law",
-        "Power Dissipation",
-        "Kirchhoff’s Laws",
-        "Series/Parallel Resistors"
+        { "startUnix": 1751364000, "endUnix": 1751371200, "reason": "Maintenance" }
       ]
     },
     {
-      "trait_type": "Available Time Slots (minutes)",
-      "value": [30, 60]
-    },
-    {
-      "trait_type": "Opens",
-      "value": "06/15/2025"
-    },
-    {
-      "trait_type": "Closes",
-      "value": "12/31/2025"
-    },
-    {
-      "trait_type": "Documentation",
-      "value": [
-        "https://sarlab.dia.uned.es/labs/docs/lab1-1.pdf",
-        "https://sarlab.dia.uned.es/labs/docs/lab1-2.pdf"
-      ]
-    },
-    {
-      "trait_type": "Additional Images",
-      "value": [
-        "https://sarlab.dia.uned.es/labs/imgs/lab1-2.png",
-        "https://sarlab.dia.uned.es/labs/imgs/lab1-3.png"
-      ]
+      "trait_type": "termsOfUse",
+      "value": { "url": "https://example.com/terms-v1.pdf", "version": "1.0", "effectiveDate": 1748736000, "sha256": "abc123..." }
     }
   ]
 }
