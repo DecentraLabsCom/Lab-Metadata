@@ -128,31 +128,78 @@ accessKey: "lab1"
 
 ```js
 {
-  "name": "Basic Electronics Lab", // Required by ERC-721
-  "description": "Design circuits with an easy-to-use schematic editor. Become familiar with the common electrical tools and components used for circuits and use them to experimentally test theoretical concepts.", // Required by ERC-721
+  // Required by ERC-721
+  "name": "Basic Electronics Lab",
+  "description": "Design circuits with an easy-to-use schematic editor. Become familiar with the common electrical tools and components used for circuits and use them to experimentally test theoretical concepts.",
   "image": "https://sarlab.dia.uned.es/labs/imgs/lab1-1.png", // First image as primary representation (ERC-721 expects one main image)
-  "attributes": [ // Custom attributes consumed by the marketplace
-    { "trait_type": "category", "value": "electronics" },
-    { "trait_type": "keywords", "value": ["Ohm's Law", "Power Dissipation", "Kirchhoff's Laws", "Series/Parallel Resistors"] },
-    { "trait_type": "timeSlots", "value": [30, 60] },
-    { "trait_type": "opens", "value": 1749945600 },   // Unix seconds (2025-06-15)
-    { "trait_type": "closes", "value": 1767139200 },  // Unix seconds (2025-12-31)
 
-    { "trait_type": "docs", "value": ["https://sarlab.dia.uned.es/labs/docs/lab1-1.pdf", "https://sarlab.dia.uned.es/labs/docs/lab1-2.pdf"] },
-    { "trait_type": "additionalImages", "value": ["https://sarlab.dia.uned.es/labs/imgs/lab1-2.png", "https://sarlab.dia.uned.es/labs/imgs/lab1-3.png"] },
+  // Custom attributes consumed by the marketplace
+  "attributes": [
+
+    // Basic lab information
+    { "trait_type": "category", "value": "electronics" },
+    {
+      "trait_type": "keywords",
+      "value": [
+        "Ohm's Law",
+        "Power Dissipation",
+        "Kirchhoff's Laws",
+        "Series/Parallel Resistors"
+      ]
+    },
+    { "trait_type": "timeSlots", "value": [30, 60] },
+
+    // Lab availability period (Unix seconds)
+    { "trait_type": "opens", "value": 1749945600 },  // 2025-06-15
+    { "trait_type": "closes", "value": 1767139200 }, // 2025-12-31
+
+    // Documentation and media
+    {
+      "trait_type": "docs",
+      "value": [
+        "https://sarlab.dia.uned.es/labs/docs/lab1-1.pdf",
+        "https://sarlab.dia.uned.es/labs/docs/lab1-2.pdf"
+      ]
+    },
+    {
+      "trait_type": "additionalImages",
+      "value": [
+        "https://sarlab.dia.uned.es/labs/imgs/lab1-2.png",
+        "https://sarlab.dia.uned.es/labs/imgs/lab1-3.png"
+      ]
+    },
+
+    // Scheduling constraints
     { "trait_type": "availableDays", "value": ["MONDAY", "TUESDAY", "WEDNESDAY"] },
-    { "trait_type": "availableHours", "value": { "start": "09:00", "end": "17:00" } },
+    {
+      "trait_type": "availableHours",
+      "value": {
+        "start": "09:00",
+        "end": "17:00"
+      }
+    },
     { "trait_type": "timezone", "value": "Europe/Madrid" },
     { "trait_type": "maxConcurrentUsers", "value": 3 },
     {
       "trait_type": "unavailableWindows",
       "value": [
-        { "startUnix": 1751364000, "endUnix": 1751371200, "reason": "Maintenance" }
+        {
+          "startUnix": 1751364000,
+          "endUnix": 1751371200,
+          "reason": "Maintenance"
+        }
       ]
     },
+
+    // Legal
     {
       "trait_type": "termsOfUse",
-      "value": { "url": "https://example.com/terms-v1.pdf", "version": "1.0", "effectiveDate": 1748736000, "sha256": "abc123..." }
+      "value": {
+        "url": "https://example.com/terms-v1.pdf",
+        "version": "1.0",
+        "effectiveDate": 1748736000,
+        "sha256": "abc123..."
+      }
     }
   ]
 }
