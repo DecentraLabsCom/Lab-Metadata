@@ -1,0 +1,25 @@
+{
+  "name": "Basic Electronics Lab",
+  "description": "Remote experiments for introductory circuit analysis.",
+  "image": "https://example.edu/labs/electronics/cover.png",
+  "attributes": [
+    {"trait_type": "resourceType", "value": "lab"},
+    {"trait_type": "classification", "value": [{"scheme": "OECD-FORD", "schemeVersion": "Frascati Manual 2015", "code": "2.2", "label": "Electrical engineering, electronic engineering, information engineering"}]},
+    {"trait_type": "classificationPrimaryScheme", "value": "OECD-FORD"},
+    {"trait_type": "keywords", "value": ["Ohm's Law", "Kirchhoff's Laws"]},
+    {"trait_type": "timeSlots", "value": [30, 60]},
+    {"trait_type": "pricing", "value": {"displayAmount": "2.5", "displayUnit": "hour", "rawPricePerSecond": "70", "roundingMode": "ceil-per-second", "billingMode": "linear-duration"}},
+    {"trait_type": "bookingMode", "value": "slot"},
+    {"trait_type": "allowedDurations", "value": [{"unit": "minute", "value": 30}, {"unit": "minute", "value": 60}]},
+    {"trait_type": "opens", "value": 1767225600},
+    {"trait_type": "closes", "value": 1798761599},
+    {"trait_type": "additionalImages", "value": ["https://example.edu/labs/electronics/bench.png"]},
+    {"trait_type": "docs", "value": ["https://example.edu/labs/electronics/handbook.pdf"]},
+    {"trait_type": "termsOfUse", "value": {"url": "https://example.edu/labs/electronics/terms-v1.pdf", "version": "1.0", "effectiveDate": 1767225600}},
+    {"trait_type": "availableDays", "value": ["MONDAY", "TUESDAY", "WEDNESDAY"]},
+    {"trait_type": "availableHours", "value": {"start": "09:00", "end": "17:00"}},
+    {"trait_type": "timezone", "value": "Europe/Madrid"},
+    {"trait_type": "maxConcurrentUsers", "value": 1},
+    {"trait_type": "unavailableWindows", "value": []}
+  ]
+}

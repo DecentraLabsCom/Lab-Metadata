@@ -1,218 +1,125 @@
 ---
-description: Metadata specification for tokenized online labs
+description: Metadata contract and off-chain document format for DecentraLabs laboratories and FMU simulations.
 ---
 
-# Lab Metadata
+# DecentraLabs lab metadata
 
-**DecentraLabs** is a community project for sharing online laboratories (OLs) in a decentralized way. It enables universities and research institutions to list their labs and offer secure, blockchain-based access to users via smart contracts and a decentralized marketplace.
+This repository documents the metadata exchanged by the DecentraLabs marketplace, the
+`Lab Gateway` and the canonical `blockchain-services` backend. A lab is an ERC-721
+token identified by `labId`; its on-chain record points to a JSON document containing
+human-readable and discovery data.
 
-This repository defines the metadata schema used to describe each lab and provides guidelines on how to store and link that information within the DecentraLabs infrastructure.
+The metadata document is not an authorization token and it is not the source of truth
+for a reservation. Access is granted only after the institutional backend verifies the
+reservation and its lifecycle state.
 
-***
+## Sources of truth
 
-## 🧬 Metadata Structure
+The current contract stores the following `LabBase` fields on-chain:
 
-Laboratories are represented as non-fungible tokens (NFTs) compliant with the [EIP-721](https://github.com/ethereum/ercs/blob/master/ERCS/erc-721.md) standard and are uniquely identified by their corresponding token ID ($labId$). Each lab is described using a structured set of fields, enabling effective management, visibility, reservation, and access. The following metadata specification adheres to the ERC-721 Metadata JSON Schema:
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `uri` | `string` | URI of the off-chain metadata JSON. |
+| `price` | `uint96` | Service-credit price per second, in raw credit units. |
+| `accessURI` | `string` | Gateway or service endpoint used after authorization. |
+| `accessKey` | `string` | Provider-side identifier used to resolve the resource. It is not a password. |
+| `createdAt` | `uint32` | Creation timestamp recorded by the contract. |
+| `resourceType` | `uint8` | `0` for an exclusive physical/remote lab; `1` for a concurrent FMU simulation. |
 
-```js
-{
-  "name": "tokenName",                // Lab name or title
-  "description": "tokenDescription",  // Short but informative description of the lab
-  "image": "primaryImageURI",         // Primary image URI for the lab
-  "attributes": [                     // Optional and customizable attributes
-    {
-      "trait_type": "traitName1",
-      "value": "traitValue1"
-    },
-    {
-      "trait_type": "traitName2",
-      "value": [
-        "traitValue2-1",
-        "traitValue2-2",
-        ...
-        "traitValue2-M"
-      ]
-    },
-    ...
-    {
-      "trait_type": "traitNameN",
-      "value": "traitValueN"
-    }
-  ]
-}
+The provider/observer authentication configuration is resolved by the backend and is
+not an `auth` property in the current `LabBase` structure. Do not add legacy `auth`
+or `$LAB` token fields to new documents.
 
+The reservation contract is authoritative for the reserved start/end timestamps,
+price and lifecycle (`PENDING`, `CONFIRMED`, `ACCESS_AUTHORIZED`, `COMPLETED`,
+`SETTLED` or `CANCELLED`). Availability values in this document are discovery hints;
+they do not rewrite an already-created reservation.
+
+DecentraLabs currently uses an internal, non-refundable service-credit ledger. Credits
+have five decimal places (`100,000` raw units per credit); the on-chain `price` remains
+raw credit units per second. There is no active external `$LAB` token reservation flow.
+
+## Off-chain document
+
+Every document must contain `name` and `description`. `image` is recommended for ERC-721
+wallets and marketplace cards. `images` and `docs` are optional arrays of absolute URLs;
+the current publisher stores additional images and documents as `additionalImages` and
+`docs` attributes respectively.
+The interoperability field catalogue and validation rules are in
+[`docs/metadata-schema.md`](docs/metadata-schema.md).
+
+The backend may serve generated documents under `/lab-content/content/{contentId}/`.
+The current admin service accepts HTTPS URLs or URLs below the configured gateway base
+URL for metadata, images and documentation. Deployment-specific gateways may apply a
+stricter policy.
+
+The publisher forms also capture scientific classification: `classification` contains
+OECD FORD entries (`scheme`, `schemeVersion`, `code`, `label`) and may include ISCED-F
+entries when the laboratory is linked to an educational programme. They persist
+`keywords` as an array, not as a single display string. Pricing and booking controls
+(`pricing`, `bookingMode`, `allowedDurations` and related fields) are
+catalogue metadata; they do not replace the on-chain price or reservation timestamps.
+
+### Resource-specific data
+
+For `resourceType = 0`, metadata describes a physical or remote resource. The gateway
+uses the on-chain access identifier when it provisions Guacamole or another provider
+adapter.
+
+For `resourceType = 1`, include FMU discovery traits when known:
+`fmiVersion`, `simulationType` (`CoSimulation` or `ModelExchange`), `fmuFileName`,
+`defaultStartTime`, `defaultStopTime`, `defaultStepSize`, and `modelVariables`.
+The FMU file is stored and executed by Lab Station; metadata never contains executable
+content or credentials.
+
+Examples:
+
+- [`examples/remote-lab.json`](examples/remote-lab.json)
+- [`examples/long-reservation-lab.json`](examples/long-reservation-lab.json)
+- [`examples/fmu-simulation.json`](examples/fmu-simulation.json)
+
+For a resource designed for multi-hour or multi-day work, see the
+[`long-reservation-lab.json`](examples/long-reservation-lab.json) example. Its
+`allowedDurationRange` permits one to fourteen days and its `allowedDurations` list is
+expressed in days; the final reservation still records immutable Unix-second `start`
+and `end` values on-chain. A metadata document cannot extend, shorten or otherwise
+alter an existing reservation.
+
+## Publication flow
+
+```mermaid
+sequenceDiagram
+    participant P as Provider
+    participant B as blockchain-services
+    participant C as Lab contract
+    participant G as Lab Gateway
+    participant M as Marketplace
+    P->>B: publish metadata and assets
+    B-->>P: HTTPS metadata URI
+    P->>C: create/update LabBase(uri, price, accessURI, accessKey, resourceType)
+    M->>C: read LabBase and reservation state
+    M->>G: fetch uri (metadata JSON)
+    B->>G: authorize reservation and issue access/session material
+    G-->>M: access only after ACCESS_AUTHORIZED
 ```
 
-The provider's address is not considered part of the metadata (as it happens with $id$), but it can be obtained with the IERC721 standard ownerOf(tokenId/labId) function. If the lab provider's name is needed, a query to the ProviderFacet smart contract (using the provider's address) is required.
+## Security and operational rules
 
-Metadata is divided between two storage models: on-chain and off-chain.
+- Never put JWTs, private keys, passwords, bearer tokens or session tickets in this JSON.
+- Treat `accessKey` as a routing/lookup identifier. Rotate credentials through the
+  gateway and backend configuration, not by exposing secrets in metadata.
+- Use HTTPS and stable content identifiers. If a document changes, publish a new URI
+  or update the on-chain URI through the provider workflow; consumers may cache old
+  content.
+- Keep timestamps in Unix seconds. Interpret `availableHours` using the declared IANA
+  `timezone`.
+- Validate media and document URLs before publication; metadata is untrusted input and
+  must never be executed.
 
-* The attributes stored on-chain are managed in the LabFacet smart contract.
-* The attributes stored off-chain are placed in a JSON document hosted externally (e.g., on IPFS). The URI to this document is referenced by the base.uri attribute in the contract.
+## Canonical implementations
 
-## ⚖️ On-Chain vs. Off-Chain Metadata
-
-### What Goes On-Chain
-
-First, let's analyze the advantages and disadvantages of this way of storing data.
-
-**Advantages:**
-
-* Trust and immutability: Data stored on-chain is tamper-proof and publicly verifiable.
-* Payment and access logic: Metadata like price, accessURI, and accessKey directly impacts business logic.
-* Autonomous operations: Enables dApps and smart contracts to function trustlessly.
-
-**Disadvantages:**
-
-* Gas fees: Updating on-chain data requires a transaction and incurs a cost.
-* Size constraints: Blockchain storage is expensive and limited.
-
-✅ In DecentraLabs, the following attributes are stored on-chain in the LabFacet contract (see the [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications)) to ensure transparency and integrity of critical service-related data:
-
-* $id$
-* $price$
-* $auth$
-* $accessURI$
-* $accessKey$
-
-This design guarantees that lab providers cannot silently change core access parameters (such as access endpoints or authentication mechanisms) after a reservation has been made, without it being publicly visible on the blockchain. Any modification would require a new transaction, creating an immutable audit trail. This promotes accountability and protects users by making unauthorized or unexpected changes detectable by anyone.
-
-### What Stays Off-Chain
-
-Again, we first review the advantages and disadvantages of this approach.
-
-**Advantages:**
-
-* Flexibility and cost-free updates: Easily updated without gas fees (when no hash is stored onchain)
-* Rich content: Enables large text, documentation, and media.
-* Integration-friendly: Easier to use in traditional web systems.
-
-**Disadvantages:**
-
-* Less secure: While IPFS provides immutability, its availability depends on pinning and hosting strategies.
-* Not trustlessly verifiable: Unless a content hash is stored on-chain.
-
-✅ Thus, DecentraLabs stores the following off-chain, referenced via base.uri:
-
-* $name$ — string, human-readable lab name.
-* $category$ — string, taxonomy key (lowercase slug).
-* $keywords$ — array of strings, tags for search.
-* $description$ — string, human-readable summary.
-* $timeSlots$ — array of numbers (minutes), positive integers.
-* $closes$ — number (Unix seconds), lab close date (inclusive).
-* $opens$ — number (Unix seconds), lab open date (inclusive).
-* $docs$ — array of absolute URLs (PDF).
-* $images$ — array of absolute URLs (first one is main image).
-* $availableDays$ — array of strings, one of MONDAY..SUNDAY.
-* $availableHours$ — object { start: "HH:mm", end: "HH:mm" } in lab timezone.
-* $timezone$ — string, IANA timezone id (e.g., Europe/Madrid).
-* $maxConcurrentUsers$ — integer > 0.
-* $unavailableWindows$ — array of { startUnix: number, endUnix: number, reason: string } with start < end.
-* $termsOfUse$ — object { url, version, effectiveDate (Unix seconds), sha256 } (sha256 optional).
-
-📝 Note: Attributes like $timeSlots$, $opens$, and $closes$ do not affect a completed reservation, as each reservation is individually recorded (immutably) on-chain in the ReservationFacet contract (visit [Smart contracts specification](https://github.com/DecentraLabsCom/Smart-Contract-Specifications) for more information). This makes them ideal candidates for off-chain storage, along with the other attributes listed above.
-
-## 🏷️ Sample Metadata
-
-### 🔗 Sample On-chain Metadata
-
-```yaml
-id: 1
-price: 2
-auth: "https://decentralabs.nebsyst.com/auth2"
-accessURI: "https://sarlab.dia.uned.es/guacamole"
-accessKey: "lab1"
-```
-
-### 🧾 Sample Off-chain Metadata JSON
-
-```js
-{
-  // Required by ERC-721
-  "name": "Basic Electronics Lab",
-  "description": "Design circuits with an easy-to-use schematic editor. Become familiar with the common electrical tools and components used for circuits and use them to experimentally test theoretical concepts.",
-  "image": "https://sarlab.dia.uned.es/labs/imgs/lab1-1.png", // First image as primary representation (ERC-721 expects one main image)
-
-  // Custom attributes consumed by the marketplace
-  "attributes": [
-
-    // Basic lab information
-    { "trait_type": "category", "value": "electronics" },
-    {
-      "trait_type": "keywords",
-      "value": [
-        "Ohm's Law",
-        "Power Dissipation",
-        "Kirchhoff's Laws",
-        "Series/Parallel Resistors"
-      ]
-    },
-    { "trait_type": "timeSlots", "value": [30, 60] },
-
-    // Lab availability period (Unix seconds)
-    { "trait_type": "opens", "value": 1749945600 },  // 2025-06-15
-    { "trait_type": "closes", "value": 1767139200 }, // 2025-12-31
-
-    // Documentation and media
-    {
-      "trait_type": "docs",
-      "value": [
-        "https://sarlab.dia.uned.es/labs/docs/lab1-1.pdf",
-        "https://sarlab.dia.uned.es/labs/docs/lab1-2.pdf"
-      ]
-    },
-    {
-      "trait_type": "additionalImages",
-      "value": [
-        "https://sarlab.dia.uned.es/labs/imgs/lab1-2.png",
-        "https://sarlab.dia.uned.es/labs/imgs/lab1-3.png"
-      ]
-    },
-
-    // Scheduling constraints
-    { "trait_type": "availableDays", "value": ["MONDAY", "TUESDAY", "WEDNESDAY"] },
-    {
-      "trait_type": "availableHours",
-      "value": {
-        "start": "09:00",
-        "end": "17:00"
-      }
-    },
-    { "trait_type": "timezone", "value": "Europe/Madrid" },
-    { "trait_type": "maxConcurrentUsers", "value": 3 },
-    {
-      "trait_type": "unavailableWindows",
-      "value": [
-        {
-          "startUnix": 1751364000,
-          "endUnix": 1751371200,
-          "reason": "Maintenance"
-        }
-      ]
-    },
-
-    // Legal
-    {
-      "trait_type": "termsOfUse",
-      "value": {
-        "url": "https://example.com/terms-v1.pdf",
-        "version": "1.0",
-        "effectiveDate": 1748736000,
-        "sha256": "abc123..."
-      }
-    }
-  ]
-}
-```
-
-## 🤝 Contributing
-
-We welcome community contributions!
-
-Suggest improvements to the metadata schema.
-
-Propose best practices for metadata management.
-
-Help optimize the contract-off-chain balance.
-
-Share your lab metadata examples.
+- [`LibAppStorage.sol`](https://github.com/DecentraLabsCom/Smart-Contracts/blob/main/contracts/libraries/LibAppStorage.sol)
+- [`LabQueryFacet.sol`](https://github.com/DecentraLabsCom/Smart-Contracts/blob/main/contracts/facets/lab/LabQueryFacet.sol)
+- [`LabAdminService.java`](https://github.com/DecentraLabsCom/Lab-Gateway/blob/main/blockchain-services/src/main/java/decentralabs/blockchain/service/labadmin/LabAdminService.java)
+- [`example-lab-metadata.md`](https://github.com/DecentraLabsCom/Lab-Gateway/blob/main/blockchain-services/docs/reference/example-lab-metadata.md)
+- [`resourceType.js`](https://github.com/DecentraLabsCom/Marketplace/blob/main/src/utils/resourceType.js)
