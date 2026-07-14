@@ -72,11 +72,11 @@ For `resourceType = 1`, include FMU discovery traits when known:
 The FMU file is stored and executed by Lab Station; metadata never contains executable
 content or credentials.
 
-Examples:
-
-- [`examples/remote-lab.json`](examples/remote-lab.json)
-- [`examples/long-reservation-lab.json`](examples/long-reservation-lab.json)
-- [`examples/fmu-simulation.json`](examples/fmu-simulation.json)
+See the [metadata examples](docs/examples.md) for provider-oriented explanations
+and complete JSON documents. The standalone fixtures are also available as
+[`remote-lab.json`](examples/remote-lab.json),
+[`long-reservation-lab.json`](examples/long-reservation-lab.json) and
+[`fmu-simulation.json`](examples/fmu-simulation.json).
 
 For a resource designed for multi-hour or multi-day work, see the
 [`long-reservation-lab.json`](examples/long-reservation-lab.json) example. Its

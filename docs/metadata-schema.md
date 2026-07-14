@@ -90,6 +90,7 @@ flowchart LR
     A --> X[Gateway/session access]
 ```
 
-See the complete valid examples in [`../examples/remote-lab.json`](../examples/remote-lab.json)
-and [`../examples/long-reservation-lab.json`](../examples/long-reservation-lab.json),
-as well as [`../examples/fmu-simulation.json`](../examples/fmu-simulation.json).
+See the [metadata examples](examples.md), or download the complete JSON fixtures:
+[`remote-lab.json`](../examples/remote-lab.json),
+[`long-reservation-lab.json`](../examples/long-reservation-lab.json) and
+[`fmu-simulation.json`](../examples/fmu-simulation.json).
