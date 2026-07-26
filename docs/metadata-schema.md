@@ -54,7 +54,7 @@ The publisher forms also emit:
 | `classification` | Array of `{ scheme, schemeVersion, code, label }`; current schemes are `OECD-FORD` and optional `ISCED-F`. |
 | `classificationPrimaryScheme` | Usually `OECD-FORD`. |
 | `educationalProgramLinked` | Boolean indicating that ISCED-F fields are intentionally linked. |
-| `pricing` | `{ displayAmount, displayUnit, rawPricePerSecond, roundingMode, billingMode }`. |
+| `pricing` | `{ displayAmount, displayUnit, rawPricePerSecond, roundingMode, billingMode }`; `rawPricePerSecond` uses 10,000,000 raw units per credit and `roundingMode` is `nearest-per-second`. |
 | `bookingMode` | `slot` for minute slots or `calendar-period` for day/week/month ranges. |
 | `allowedDurationRange` | `{ unit, min, max }` for calendar-period bookings. |
 | `allowedDurations` | Expanded duration options, each `{ unit, value }`. |
@@ -62,6 +62,11 @@ The publisher forms also emit:
 
 These fields describe catalog and billing presentation. The contract's raw `price` and
 the reservation's immutable timestamps remain authoritative for settlement.
+
+For an hourly display amount, `rawPricePerSecond` is the nearest integer to
+`displayAmount * 10,000,000 / 3,600`. For day/week/month displays, convert the
+corresponding calendar duration to seconds first. Keep the raw value as a string to
+avoid JavaScript number precision loss.
 
 The current Marketplace and Gateway publisher forms write these values as an
 `attributes` entry with `trait_type: "pricing"`. The backend metadata parser also

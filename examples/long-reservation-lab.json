@@ -7,7 +7,7 @@
     {"trait_type": "classification", "value": [{"scheme": "OECD-FORD", "schemeVersion": "Frascati Manual 2015", "code": "2.7", "label": "Environmental engineering"}]},
     {"trait_type": "classificationPrimaryScheme", "value": "OECD-FORD"},
     {"trait_type": "keywords", "value": ["temperature", "humidity", "long-running experiment"]},
-    {"trait_type": "pricing", "value": {"displayAmount": "12", "displayUnit": "day", "rawPricePerSecond": "14", "roundingMode": "ceil-per-second", "billingMode": "linear-duration"}},
+    {"trait_type": "pricing", "value": {"displayAmount": "12", "displayUnit": "day", "rawPricePerSecond": "1389", "roundingMode": "nearest-per-second", "billingMode": "linear-duration"}},
     {"trait_type": "bookingMode", "value": "calendar-period"},
     {"trait_type": "allowedDurationRange", "value": {"unit": "day", "min": 1, "max": 14}},
     {"trait_type": "allowedDurations", "value": [{"unit": "day", "value": 1}, {"unit": "day", "value": 2}, {"unit": "day", "value": 3}, {"unit": "day", "value": 4}, {"unit": "day", "value": 5}, {"unit": "day", "value": 6}, {"unit": "day", "value": 7}, {"unit": "day", "value": 8}, {"unit": "day", "value": 9}, {"unit": "day", "value": 10}, {"unit": "day", "value": 11}, {"unit": "day", "value": 12}, {"unit": "day", "value": 13}, {"unit": "day", "value": 14}]},

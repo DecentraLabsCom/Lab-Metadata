@@ -36,8 +36,10 @@ price and lifecycle (`PENDING`, `CONFIRMED`, `ACCESS_AUTHORIZED`, `COMPLETED`,
 they do not rewrite an already-created reservation.
 
 DecentraLabs currently uses an internal, non-refundable service-credit ledger. Credits
-have five decimal places (`100,000` raw units per credit); the on-chain `price` remains
-raw credit units per second. There is no active external `$LAB` token reservation flow.
+have seven decimal places (`10,000,000` raw units per credit); the on-chain `price` remains
+raw credit units per second. Display prices are converted to that per-second value using
+nearest-integer rounding, and consumers should display at least three fractional digits
+when exposing converted prices. There is no active external `$LAB` token reservation flow.
 
 ## Off-chain document
 
