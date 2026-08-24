@@ -2,6 +2,7 @@
   "name": "Spring Damper FMU",
   "description": "A concurrent FMU simulation for a damped spring model.",
   "image": "https://example.edu/fmu/spring-damper.png",
+  "demoEnabled": false,
   "attributes": [
     {"trait_type": "resourceType", "value": "fmu"},
     {"trait_type": "classification", "value": [{"scheme": "OECD-FORD", "schemeVersion": "Frascati Manual 2015", "code": "2.3", "label": "Mechanical engineering"}]},

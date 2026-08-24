@@ -9,6 +9,7 @@ This is the normative off-chain shape. JSON object keys are case-sensitive.
 | `name` | yes | string | Human-readable lab or simulation name. |
 | `description` | yes | string | Human-readable description. |
 | `image` | recommended | string | Primary HTTPS or gateway URL. |
+| `demoEnabled` | no | boolean | Catalogue display flag indicating that a provider offers a public demo. It does not grant access or bypass reservation and Gateway authorization. |
 | `images` | no | string[] | Optional normalized media list for consumers. The publisher form uses `additionalImages` below. |
 | `docs` | no | string[] | Optional documentation URLs; the publisher form writes them as a `docs` attribute. |
 | `attributes` | no | object[] | Objects with `trait_type` and `value`. |

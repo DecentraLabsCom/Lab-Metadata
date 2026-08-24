@@ -2,6 +2,7 @@
   "name": "Environmental Chamber",
   "description": "Remote environmental chamber for experiments that require stable temperature and humidity over several hours or days.",
   "image": "https://example.edu/labs/environmental-chamber/cover.png",
+  "demoEnabled": false,
   "attributes": [
     {"trait_type": "resourceType", "value": "lab"},
     {"trait_type": "classification", "value": [{"scheme": "OECD-FORD", "schemeVersion": "Frascati Manual 2015", "code": "2.7", "label": "Environmental engineering"}]},

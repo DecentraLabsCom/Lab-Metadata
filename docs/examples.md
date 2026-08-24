@@ -20,6 +20,7 @@ options and a single concurrent user.
   "name": "Basic Electronics Lab",
   "description": "Remote experiments for introductory circuit analysis.",
   "image": "https://example.edu/labs/electronics/cover.png",
+  "demoEnabled": false,
   "attributes": [
     {"trait_type": "resourceType", "value": "lab"},
     {"trait_type": "classification", "value": [{"scheme": "OECD-FORD", "schemeVersion": "Frascati Manual 2015", "code": "2.2", "label": "Electrical engineering, electronic engineering, information engineering"}]},
@@ -57,6 +58,7 @@ remain authoritative once it is created.
   "name": "Environmental Chamber",
   "description": "Remote environmental chamber for experiments that require stable temperature and humidity over several hours or days.",
   "image": "https://example.edu/labs/environmental-chamber/cover.png",
+  "demoEnabled": false,
   "attributes": [
     {"trait_type": "resourceType", "value": "lab"},
     {"trait_type": "classification", "value": [{"scheme": "OECD-FORD", "schemeVersion": "Frascati Manual 2015", "code": "2.7", "label": "Environmental engineering"}]},
@@ -94,6 +96,7 @@ exposes discovery information and model-variable descriptors.
   "name": "Spring Damper FMU",
   "description": "A concurrent FMU simulation for a damped spring model.",
   "image": "https://example.edu/fmu/spring-damper.png",
+  "demoEnabled": false,
   "attributes": [
     {"trait_type": "resourceType", "value": "fmu"},
     {"trait_type": "classification", "value": [{"scheme": "OECD-FORD", "schemeVersion": "Frascati Manual 2015", "code": "2.3", "label": "Mechanical engineering"}]},

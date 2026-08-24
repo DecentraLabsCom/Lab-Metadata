@@ -2,6 +2,7 @@
   "name": "Basic Electronics Lab",
   "description": "Remote experiments for introductory circuit analysis.",
   "image": "https://example.edu/labs/electronics/cover.png",
+  "demoEnabled": false,
   "attributes": [
     {"trait_type": "resourceType", "value": "lab"},
     {"trait_type": "classification", "value": [{"scheme": "OECD-FORD", "schemeVersion": "Frascati Manual 2015", "code": "2.2", "label": "Electrical engineering, electronic engineering, information engineering"}]},
