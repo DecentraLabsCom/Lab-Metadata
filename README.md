@@ -31,9 +31,9 @@ not an `auth` property in the current `LabBase` structure. Do not add legacy `au
 or `$LAB` token fields to new documents.
 
 The reservation contract is authoritative for the reserved start/end timestamps,
-price and lifecycle (`PENDING`, `CONFIRMED`, `ACCESS_AUTHORIZED`, `COMPLETED`,
-`SETTLED` or `CANCELLED`). Availability values in this document are discovery hints;
-they do not rewrite an already-created reservation.
+price and lifecycle (`PENDING`, `CONFIRMED`, `ACCESS_AUTHORIZED`, `SETTLED` or
+`CANCELLED`). Availability values in this document may be enforced when a new
+reservation is validated; they do not rewrite an already-created reservation.
 
 DecentraLabs currently uses an internal, non-refundable service-credit ledger. Credits
 have seven decimal places (`10,000,000` raw units per credit); the on-chain `price` remains
@@ -44,9 +44,11 @@ when exposing converted prices. There is no active external `$LAB` token reserva
 ## Off-chain document
 
 Every document must contain `name` and `description`. `image` is recommended for ERC-721
-wallets and marketplace cards. `images` and `docs` are optional arrays of absolute URLs;
-the current publisher stores additional images and documents as `additionalImages` and
-`docs` attributes respectively.
+wallets and marketplace cards. The canonical form stores additional images and
+documents as `additionalImages` and `docs` attributes respectively. Both Gateway
+publication and Marketplace metadata validation accept top-level `images`/`docs` as
+input aliases, merge them into those attributes, and remove the aliases from the
+canonical document. Use the attribute form when authoring shared JSON.
 The interoperability field catalogue and validation rules are in
 [`docs/metadata-schema.md`](docs/metadata-schema.md).
 
@@ -59,8 +61,10 @@ The publisher forms also capture scientific classification: `classification` con
 OECD FORD entries (`scheme`, `schemeVersion`, `code`, `label`) and may include ISCED-F
 entries when the laboratory is linked to an educational programme. They persist
 `keywords` as an array, not as a single display string. Pricing and booking controls
-(`pricing`, `bookingMode`, `allowedDurations` and related fields) are
-catalogue metadata; they do not replace the on-chain price or reservation timestamps.
+(`pricing`, `bookingMode`, `allowedDurations` and related fields) are catalogue
+metadata; `periodRules.enforceDailyWindow` can additionally make `availableHours`
+part of calendar-period admission validation. These fields do not replace the
+on-chain price or reservation timestamps.
 
 ### Resource-specific data
 
@@ -86,6 +90,12 @@ For a resource designed for multi-hour or multi-day work, see the
 expressed in days; the final reservation still records immutable Unix-second `start`
 and `end` values on-chain. A metadata document cannot extend, shorten or otherwise
 alter an existing reservation.
+
+## Validation
+
+Run `node scripts/validate.mjs` to parse every JSON fixture, compare each fixture page
+with its canonical JSON file and check relative Markdown links. The same command runs
+in [GitHub Actions](.github/workflows/validate.yml) on pushes and pull requests.
 
 ## Publication flow
 

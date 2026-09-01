@@ -10,6 +10,11 @@ those values with provider-owned content before publication. Metadata is a
 catalogue and discovery document; it does not grant access or change the
 reservation state stored on-chain.
 
+The examples use the interoperable attribute form for `docs` and
+`additionalImages`. Gateway publication and Marketplace validation also accept root
+`docs` or `images` as input aliases, but normalize them into the canonical attributes
+before the document is persisted or consumed.
+
 ## Example: remote laboratory
 
 This is a short-duration remote laboratory with fixed minute-based booking
@@ -52,6 +57,11 @@ This example describes a remote environmental chamber for experiments lasting
 from one to fourteen days. `allowedDurationRange` and `periodRules` describe
 the catalogue policy; the reservation's immutable `start` and `end` timestamps
 remain authoritative once it is created.
+
+This example leaves `periodRules.enforceDailyWindow` unset, so its
+`availableHours` are not applied to the whole calendar period. Set that field to
+`true` when the backend should enforce the declared daily window for this kind
+of booking.
 
 ```json
 {

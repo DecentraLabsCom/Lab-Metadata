@@ -10,22 +10,30 @@ This is the normative off-chain shape. JSON object keys are case-sensitive.
 | `description` | yes | string | Human-readable description. |
 | `image` | recommended | string | Primary HTTPS or gateway URL. |
 | `demoEnabled` | no | boolean | Catalogue display flag indicating that a provider offers a public demo. It does not grant access or bypass reservation and Gateway authorization. |
-| `images` | no | string[] | Optional normalized media list for consumers. The publisher form uses `additionalImages` below. |
-| `docs` | no | string[] | Optional documentation URLs; the publisher form writes them as a `docs` attribute. |
+| `images` | no | string[] | Input alias; merged after `image` into the canonical `additionalImages` attribute and then removed. |
+| `docs` | no | string[] | Input alias; merged into the canonical `docs` attribute and then removed. |
+| `periodRules` | no | object | Input alias; normalized into the canonical `periodRules` attribute and then removed. |
 | `attributes` | no | object[] | Objects with `trait_type` and `value`. |
 
 The active backend requires `name` and `description` and validates URL schemes. The
-publisher form stores the primary image in `image` and extra media in the
+canonical publisher form stores the primary image in `image` and extra media in the
 `additionalImages` attribute. Consumers may combine those values into an `images`
-list; a top-level `images` list is also accepted for interoperability.
+list, but a top-level `images` list is only an input alias.
 
 `contentId` is a publish-request control used by the Gateway to choose a storage
 directory; it is removed before the metadata JSON is persisted and is not part of the
 document schema.
+For cross-consumer documents, keep additional images and documentation in
+`attributes` (`additionalImages` and `docs`). Both the Gateway publication normalizer
+and Marketplace's metadata sanitizer accept root `images` and `docs` as input aliases,
+merge and deduplicate them with the attribute values, and expose only the canonical
+attribute form afterwards.
+The same input normalization applies to a root `periodRules` object; when both root
+and attribute forms are present, the attribute form takes precedence.
 
 ## Standard attributes
 
-`category` (legacy display alias), `keywords`, `timeSlots` (minutes), `opens`, `closes`, `availableDays`,
+`category` (legacy Gateway display alias), `keywords`, `timeSlots` (minutes), `opens`, `closes`, `availableDays`,
 `availableHours`, `timezone`, `maxConcurrentUsers`, `unavailableWindows`, and
 `termsOfUse` are discovery and policy fields. Use Unix seconds for timestamps and
 `HH:mm` for local hours. `maxConcurrentUsers` is meaningful for FMU resources; the
@@ -46,7 +54,11 @@ The recommended shapes are:
 | `availableDays` | Array of uppercase weekday names (`MONDAY` … `SUNDAY`). |
 | `availableHours` | `{ "start": "HH:mm", "end": "HH:mm" }`. |
 | `unavailableWindows` | Array of `{ "startUnix": number, "endUnix": number, "reason": string }`. |
-| `termsOfUse` | `{ "url": string, "version": string, "effectiveDate": number, "sha256": string? }`; `effectiveDate` is Unix seconds and `sha256`, when present, is a lowercase 64-character hex digest. |
+| `termsOfUse` | `{ "url": string, "version": string, "effectiveDate": number, "sha256": string? }`; serialized `effectiveDate` is Unix seconds and `sha256`, when present, is a lowercase 64-character hex digest. |
+
+Marketplace and Gateway normalize a date-only input such as `2026-01-01` at
+UTC midnight, or a numeric-string epoch, to the same numeric Unix-seconds value
+before it is persisted or consumed.
 
 The publisher forms also emit:
 
@@ -59,10 +71,23 @@ The publisher forms also emit:
 | `bookingMode` | `slot` for minute slots or `calendar-period` for day/week/month ranges. |
 | `allowedDurationRange` | `{ unit, min, max }` for calendar-period bookings. |
 | `allowedDurations` | Expanded duration options, each `{ unit, value }`. |
-| `periodRules` | `{ startGranularity, allowCustomDateRange, minDurationDays, maxDurationDays }`. |
+| `periodRules` | `{ startGranularity, minimumNoticeHours?, allowCustomDateRange, minDurationDays, maxDurationDays, enforceDailyWindow? }`. |
 
 These fields describe catalog and billing presentation. The contract's raw `price` and
 the reservation's immutable timestamps remain authoritative for settlement.
+
+`enforceDailyWindow` is relevant to `calendar-period` bookings: when `true`, the
+backend applies `availableHours` to the booking start and end; when omitted or
+`false`, long-running bookings are not restricted by that daily window. The current
+publisher form emits the four required duration fields and leaves this switch off.
+`minimumNoticeHours` is accepted as metadata for future policy enforcement but is not
+currently applied by the availability validator.
+
+The current Marketplace calendar-period form does not expose time-of-day controls and
+submits period boundaries at midnight. Therefore, a document that sets
+`enforceDailyWindow: true` with an `availableHours` range that excludes midnight may
+be rejected by the Gateway; use compatible boundary times until the form supports
+that policy explicitly.
 
 For an hourly display amount, `rawPricePerSecond` is the nearest integer to
 `displayAmount * 10,000,000 / 3,600`. For day/week/month displays, convert the
@@ -75,8 +100,9 @@ accepts the same object at the document root; new documents should keep it under
 `attributes`.
 
 `classification` is the canonical category representation produced by the current
-forms. A simple `category` string may be retained as a backwards-compatible display
-alias, but it must not be used instead of the coded classification.
+forms. The Gateway parser still understands a simple `category` string for display,
+but Marketplace sanitization drops that legacy trait; it must not be used instead of
+the coded classification.
 
 FMU documents may additionally expose `fmiVersion`, `simulationType`, `fmuFileName`,
 `defaultStartTime`, `defaultStopTime`, `defaultStepSize`, and `modelVariables`.
