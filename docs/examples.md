@@ -1,8 +1,8 @@
 # Metadata examples
 
 These examples are complete metadata documents for the main laboratory resource
-types. They are intended for provider onboarding, marketplace rendering and
-consumer integration tests. The JSON files in [`../examples/`](../examples/) are
+types. They are intended for provider onboarding and consumer integration tests.
+The JSON files in [`../examples/`](../examples/) are
 the same examples as standalone fixtures.
 
 The examples use `example.edu` URLs and illustrative Unix timestamps. Replace
@@ -10,10 +10,8 @@ those values with provider-owned content before publication. Metadata is a
 catalogue and discovery document; it does not grant access or change the
 reservation state stored on-chain.
 
-The examples use the interoperable attribute form for `docs` and
-`additionalImages`. Gateway publication and Marketplace validation also accept root
-`docs` or `images` as input aliases, but normalize them into the canonical attributes
-before the document is persisted or consumed.
+Additional images and documentation are represented by the `additionalImages` and
+`docs` attributes.
 
 ## Example: remote laboratory
 
