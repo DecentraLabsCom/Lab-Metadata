@@ -1,0 +1,46 @@
+# FMU simulation JSON fixture
+
+Complete metadata fixture for a concurrent FMI 2.0 co-simulation. The FMU file
+is provisioned and executed by the provider's Lab Station; the raw JSON file
+remains available at [`fmu-simulation.json`](fmu-simulation.json) for integration
+tests and provider tooling.
+
+```json
+{
+  "name": "Spring Damper FMU",
+  "description": "A concurrent FMU simulation for a damped spring model.",
+  "image": "https://example.edu/fmu/spring-damper.png",
+  "demoEnabled": false,
+  "attributes": [
+    {"trait_type": "resourceType", "value": "fmu"},
+    {"trait_type": "classification", "value": [{"scheme": "OECD-FORD", "schemeVersion": "Frascati Manual 2015", "code": "2.3", "label": "Mechanical engineering"}]},
+    {"trait_type": "classificationPrimaryScheme", "value": "OECD-FORD"},
+    {"trait_type": "keywords", "value": ["FMI", "dynamics", "control"]},
+    {"trait_type": "timeSlots", "value": [30, 60, 120]},
+    {"trait_type": "pricing", "value": {"displayAmount": "1.5", "displayUnit": "hour", "rawPricePerSecond": "4167", "roundingMode": "nearest-per-second", "billingMode": "linear-duration"}},
+    {"trait_type": "bookingMode", "value": "slot"},
+    {"trait_type": "allowedDurations", "value": [{"unit": "minute", "value": 30}, {"unit": "minute", "value": 60}, {"unit": "minute", "value": 120}]},
+    {"trait_type": "opens", "value": 1767225600},
+    {"trait_type": "closes", "value": 1798761599},
+    {"trait_type": "additionalImages", "value": []},
+    {"trait_type": "docs", "value": ["https://example.edu/fmu/spring-damper-guide.pdf"]},
+    {"trait_type": "termsOfUse", "value": {"url": "https://example.edu/fmu/spring-damper/terms-v1.pdf", "version": "1.0", "effectiveDate": 1767225600}},
+    {"trait_type": "availableDays", "value": ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY"]},
+    {"trait_type": "availableHours", "value": {"start": "00:00", "end": "23:59"}},
+    {"trait_type": "timezone", "value": "Europe/Madrid"},
+    {"trait_type": "unavailableWindows", "value": []},
+    {"trait_type": "fmiVersion", "value": "2.0"},
+    {"trait_type": "simulationType", "value": "CoSimulation"},
+    {"trait_type": "fmuFileName", "value": "spring-damper.fmu"},
+    {"trait_type": "defaultStartTime", "value": 0},
+    {"trait_type": "defaultStopTime", "value": 10},
+    {"trait_type": "defaultStepSize", "value": 0.01},
+    {"trait_type": "maxConcurrentUsers", "value": 10},
+    {"trait_type": "modelVariables", "value": [
+      {"name": "position", "causality": "output", "type": "Real", "unit": "m", "start": 0},
+      {"name": "velocity", "causality": "output", "type": "Real", "unit": "m/s", "start": 0},
+      {"name": "force", "causality": "input", "type": "Real", "unit": "N", "start": 0}
+    ]}
+  ]
+}
+```
