@@ -37,9 +37,10 @@ tests and provider tooling.
     {"trait_type": "defaultStepSize", "value": 0.01},
     {"trait_type": "maxConcurrentUsers", "value": 10},
     {"trait_type": "modelVariables", "value": [
-      {"name": "position", "causality": "output", "type": "Real", "unit": "m", "start": 0},
+      {"name": "position", "description": "Spring displacement from its equilibrium position.", "causality": "output", "type": "Real", "unit": "m", "start": 0},
       {"name": "velocity", "causality": "output", "type": "Real", "unit": "m/s", "start": 0},
-      {"name": "force", "causality": "input", "type": "Real", "unit": "N", "start": 0}
+      {"name": "force", "displayName": "Applied force", "description": "External force applied to the mass.", "causality": "input", "type": "Real", "unit": "N", "displayUnit": {"name": "kN", "factor": 0.001, "offset": 0}, "start": 0, "min": -500, "max": 500},
+      {"name": "mode", "displayName": "Experiment mode", "description": "Select the experiment mode.", "causality": "input", "type": "Enumeration", "start": 0, "min": 0, "max": 2, "enumItems": [{"value": 0, "name": "Free response"}, {"value": 1, "name": "Step force"}, {"value": 2, "name": "Damped response"}]}
     ]}
   ]
 }
