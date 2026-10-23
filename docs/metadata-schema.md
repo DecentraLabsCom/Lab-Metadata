@@ -63,8 +63,21 @@ avoid JavaScript number precision loss.
 
 FMU documents may additionally expose `fmiVersion`, `simulationType`, `fmuFileName`,
 `defaultStartTime`, `defaultStopTime`, `defaultStepSize`, and `modelVariables`.
-`modelVariables` is an array of descriptors such as `{ name, causality, type, unit,
-start }`; the descriptor may contain additional FMI fields returned by the station.
+`modelVariables` is an array of descriptors such as `{ name, displayName, description, causality,
+variability, type, unit, displayUnit, start, min, max, enumItems }`. FMI descriptions,
+numeric bounds, enumeration choices and display-unit conversion metadata are retained
+when available. A `displayUnit` object uses `{ name, factor, offset, inverse? }`.
+For normal display units the conversion is `display value = factor * FMI value + offset`;
+when `inverse` is true (FMI 3), it is `display value = factor / FMI value` and the
+offset must be zero. `enumItems` is an array of
+`{ value, name, description? }` entries. `min` and `max` are numeric operating-range
+bounds, not a declared input resolution. `displayName` is an optional user-facing
+label; `name` remains the FMI identifier. It can be populated from an AAS display
+name by a metadata producer, but this metadata contract does not perform AAS
+language selection. Keep `unit` as the model's FMI unit; the UI
+converts to and from `displayUnit` while sending values to the FMU in its native unit.
+Optional variable metadata should come from the FMU or a linked semantic source; do
+not repeat FMI values in another field.
 For an FMU resource, include `fmuFileName`. The auto-described trio `fmiVersion`,
 `simulationType` and `modelVariables` may be absent; when present, the fields must be
 coherent.

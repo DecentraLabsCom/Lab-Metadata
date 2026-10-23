@@ -57,6 +57,8 @@ For `resourceType = 1`, include FMU discovery traits when known:
 `fmiVersion`, `simulationType` (`CoSimulation` or `ModelExchange`), `fmuFileName`,
 `defaultStartTime`, `defaultStopTime`, `defaultStepSize`, and `modelVariables`.
 Metadata never contains executable content or credentials.
+Supported optional variable metadata and display-unit conversion semantics are
+documented in [the metadata schema guide](docs/metadata-schema.md).
 
 See the [metadata examples](docs/examples.md) for provider-oriented explanations
 and complete JSON documents. The standalone fixtures are also available as
